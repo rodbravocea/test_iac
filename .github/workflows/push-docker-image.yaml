@@ -79,7 +79,5 @@ jobs:
     - terraform-plan
 
     steps:
-      - name: Verifica Cluster
-        run: kind delete cluster
       - name: Se Despliega la Infraestructura
         run: kind create cluster --config kind-multi-node.yaml
