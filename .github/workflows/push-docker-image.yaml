@@ -1,0 +1,75 @@
+# This workflow uses actions that are not certified by GitHub.
+# Estas las proporcionan entidades terceras y las gobiernan
+# condiciones de servicio, políticas de privacidad y documentación de soporte
+# documentación.
+
+name: Create and publish a Docker image
+
+on:
+  push:
+    branches: ['main']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  terraform-init:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Terraform init
+        run: echo "OK"
+
+  terraform-fmt:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    needs:
+    - terraform-init
+
+    steps:
+      - name: Se Formatea el codigo
+        run: echo "OK"
+
+  terraform-validate:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    needs:
+    - terraform-fmt
+
+    steps:
+      - name: Se Valida el Codigo
+        run: echo "OK"
+
+  terraform-plan:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    needs:
+    - terraform-validate
+
+    steps:
+      - name: Se Valida el Codigo
+        run: echo "OK"
+
+  terraform-apply:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+    needs:
+    - terraform-plan
+
+    steps:
+      - name: Se Despliega la Infraestructura
+        run: kind create cluster --config kind-multi-node.yaml
